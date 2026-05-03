@@ -5,7 +5,7 @@ resource "aws_security_group" "this" {
     from_port   = 3000
     to_port     = 3000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [var.alb_sg]
   }
 
   ingress {
@@ -51,9 +51,6 @@ resource "aws_instance" "this" {
   }
 }
 
-output "public_ip" {
-  value = aws_instance.this.public_ip
-}
 
 output "sg_id" {
   value = aws_security_group.this.id
