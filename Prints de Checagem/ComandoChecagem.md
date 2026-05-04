@@ -69,3 +69,21 @@ nc -zv app-alb-2124097346.us-east-1.elb.amazonaws.com 80
 ```bash
 for i in {1..10}; do curl -s http://app-alb-2124097346.us-east-1.elb.amazonaws.com/; echo; done
 ```
+
+### Ver headers do ALB
+
+```bash
+curl -v http://app-alb-2124097346.us-east-1.elb.amazonaws.com/ 2>&1 | grep -i "< server\|< date\|< content"
+```
+
+### Ver tempo de resposta (latência real)
+
+```bash
+curl -o /dev/null -s -w "Time: %{time_total}s\n" http://app-alb-2124097346.us-east-1.elb.amazonaws.com/
+```
+
+### Debug avançado (headers completos)
+
+```bash
+curl -v --http1.1 http://app-alb-2124097346.us-east-1.elb.amazonaws.com/
+```
