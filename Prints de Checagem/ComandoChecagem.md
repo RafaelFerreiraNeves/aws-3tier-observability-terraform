@@ -1,0 +1,47 @@
+CHECAR SE A APLICAÇÃO ESTÁ CONECTANDO COM O BANCO
+
+Validar a variável de ambiente do banco de dados dentro do contêiner
+docker exec -it node-app printenv | grep DB_HOST
+
+Visualizando logs do container
+docker logs node-app
+
+Verificando resolução de DNS do banco de dados
+nslookup app-db.cclwyemq4f8s.us-east-1.rds.amazonaws.com
+
+Visualizando conteúdo de arquivo de debug
+cat /home/ec2-user/db_debug.txt
+
+Verificando resolução de hostname via sistema
+getent hosts app-db.cclwyemq4f8s.us-east-1.rds.amazonaws.com
+
+
+
+VALIDAR SE O ALB ESTÁ RODANDO
+
+
+Teste completo com verbose
+curl -v http://app-alb-2124097346.us-east-1.elb.amazonaws.com
+
+Teste básico do ALB (HTTP status detalhado)
+curl -I http://app-alb-2124097346.us-east-1.elb.amazonaws.com
+
+Testar resolução DNS do ALB
+nslookup app-alb-2124097346.us-east-1.elb.amazonaws.com
+
+sudo yum install -y nc
+
+Testar conexão TCP na porta 80
+nc -zv app-alb-2124097346.us-east-1.elb.amazonaws.com 80
+
+Testar múltiplas requisições (ver load balancing)
+for i in {1..10}; do curl -s http://app-alb-2124097346.us-east-1.elb.amazonaws.com/; echo; done
+
+Ver headers do ALB
+curl -v http://app-alb-2124097346.us-east-1.elb.amazonaws.com/ 2>&1 | grep -i "< server\|< date\|< content"
+
+Ver tempo de resposta (latência real)
+curl -o /dev/null -s -w "Time: %{time_total}s\n" http://app-alb-2124097346.us-east-1.elb.amazonaws.com/
+
+Debug avançado (headers completos)
+curl -v --http1.1 http://app-alb-2124097346.us-east-1.elb.amazonaws.com/
