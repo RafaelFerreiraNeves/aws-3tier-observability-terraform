@@ -35,7 +35,7 @@ resource "aws_instance" "this" {
 
   key_name = "my-key"
 
-  # ✅ AGORA USANDO TEMPLATEFILE (CORRETO)
+ 
   user_data = templatefile("${path.module}/user_data.sh", {
     db_host     = var.db_host
     db_user     = var.db_user
@@ -43,7 +43,7 @@ resource "aws_instance" "this" {
     db_name     = var.db_name
   })
 
-  # 🔥 GARANTE RECRIAÇÃO SE USER_DATA MUDAR
+  
   user_data_replace_on_change = true
 
   tags = {
