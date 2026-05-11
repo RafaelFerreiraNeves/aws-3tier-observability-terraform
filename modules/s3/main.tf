@@ -2,6 +2,7 @@ data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "alb_logs" {
   bucket = "alb-logs-app-2026"
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_ownership_controls" "alb_logs" {
